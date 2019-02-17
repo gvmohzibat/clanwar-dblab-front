@@ -1,0 +1,285 @@
+<div class="row no-gutters">
+  <div id="errordisplay">{{error|json}}</div>
+
+  <div class="col-6">
+
+    <!-- get users -->
+    <section>
+      <h3>users</h3>
+      <app-table [columns]="['id','username','email']" [data]="users"></app-table>
+    </section>
+
+    <!-- get clans -->
+    <section>
+      <h3>clans</h3>
+      <app-table [columns]="[
+                              'clan_id',
+                              'food',
+                              'soldier',
+                              'gold',
+                              'lumber',
+                              'exp',
+                              'motto',
+                              'active builing'
+                            ]"
+                 [data]="clans"></app-table>
+    </section>
+
+    <!-- get clan users -->
+    <section>
+      <h3>clan users</h3>
+      <app-table [columns]="[
+                                'id',
+                          'clan_id',
+                          'user_id',
+                          'role_id',
+                          'job_id'
+                            ]"
+                 [data]="clanUsers"></app-table>
+
+    </section>
+
+    <!-- get clanBuildings -->
+    <section>
+      <h3>clanBuildings</h3>
+      <app-table [columns]="['clan id','building id']" [data]="clanBuildings"></app-table>
+    </section>
+
+    <!-- get buildings -->
+    <section>
+      <h3>buildings</h3>
+      <app-table [columns]="['id','progress']" [data]="buildings"></app-table>
+    </section>
+
+    <!-- get warInfo -->
+    <section>
+      <h3>warInfo</h3>
+      <app-table [columns]="['war id', 'clan id', 'soldier','soldier loss','food','gold','won']" [data]="warInfo"></app-table>
+    </section>
+
+    <!-- get roles -->
+    <section>
+      <h3>roles</h3>
+      <app-table [columns]="['id','start date']" [data]="roles"></app-table>
+    </section>
+
+    <!-- get jobs -->
+    <section>
+      <h3>jobs</h3>
+      <app-table [columns]="['id','level','exp']" [data]="jobs"></app-table>
+    </section>
+
+    <!-- get roleTypes -->
+    <section>
+      <h3>roleTypes</h3>
+      <app-table [columns]="['role id', 'type id']" [data]="roleTypes"></app-table>
+    </section>
+
+    <!-- get jobTypes -->
+    <section>
+      <h3>jobTypes</h3>
+      <app-table [columns]="['job id', 'type id']" [data]="jobTypes"></app-table>
+    </section>
+
+    <!-- get types -->
+    <section>
+      <h3>types</h3>
+      <app-table [columns]="['id','name']" [data]="types"></app-table>
+    </section>
+
+    <!-- get wars -->
+    <section>
+      <h3>wars</h3>
+      <app-table [columns]="['id','attacker id', 'defender id']" [data]="wars"></app-table>
+    </section>
+
+    <!-- clan rankings -->
+    <section>
+      <h3>clan ranking</h3>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="sort_by" [(ngModel)]="sort_by">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="order_by" [(ngModel)]="order_by">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="button" (click)="getClansRanking()">get ranking</button>
+        </div>
+      </div>
+      <app-table [columns]="[
+      'clan_id',
+      'exp',
+      'win count',
+      'lose count'
+                            ]"
+                 [data]="clanRankings"></app-table>
+    </section>
+  </div>
+  <div class="col-6">
+
+    <!-- create user -->
+    <section>
+      <h3>create user</h3>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="username" [(ngModel)]="username">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="email" [(ngModel)]="email">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="button" (click)="createUser()">create user</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- select user -->
+    <section>
+      <h3>select user</h3>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="username" [(ngModel)]="username">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="button" (click)="selectUser()">select user</button>
+        </div>
+      </div>
+      <div>current: {{username}}</div>
+    </section>
+
+    <!-- get user clan -->
+    <section>
+      <h3>user clan</h3>
+      {{_userClanid}}
+      <!-- <table>
+        <thead>
+          <tr>
+            <th>clan_id</th>
+            <th>food</th>
+            <th>soldier</th>
+            <th>gold</th>
+            <th>lumber</th>
+            <th>exp</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of userClan">
+            <td *ngFor="let col of c"></td>
+          </tr>
+        </tbody>
+      </table> -->
+    </section>
+
+    <!-- join clan -->
+    <section>
+      <h3>join clan</h3>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="user_id" [(ngModel)]="user_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="clan_id" [(ngModel)]="clan_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="admin_id" [(ngModel)]="admin_id">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="button" (click)="joinClan()">join clan</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- change job -->
+    <section>
+      <h3>change job</h3>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="user_id" [(ngModel)]="user_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="job" [(ngModel)]="job">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="button" (click)="changeJob()">change job</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- change role -->
+    <section>
+      <h3>change role</h3>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="user_id" [(ngModel)]="user_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="role" [(ngModel)]="role">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="admin_id" [(ngModel)]="admin_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="clan_id" [(ngModel)]="clan_id">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="button" (click)="changeRole()">change role</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- attack clan -->
+    <section>
+      <h3>attack</h3>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="attacker_id" [(ngModel)]="attacker_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="defender_id" [(ngModel)]="defender_id">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="button" (click)="attack()">attack</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- change motto clan -->
+    <section>
+      <h3>change motto</h3>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="user_id" [(ngModel)]="user_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="clan_id" [(ngModel)]="clan_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="motto" [(ngModel)]="motto">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="button" (click)="changeMotto()">change motto</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- change active building -->
+    <section>
+      <h3>change active building</h3>
+      <div class="row">
+        <div class="col">
+          <input class="form-control" type="text" placeholder="user_id" [(ngModel)]="user_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="clan_id" [(ngModel)]="clan_id">
+        </div>
+        <div class="col">
+          <input class="form-control" type="text" placeholder="building_type" [(ngModel)]="building_type">
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-primary" type="button" (click)="changeActiveBuilding()">change active building</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
